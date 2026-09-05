@@ -1,12 +1,33 @@
 import { Hono } from 'hono'
-import { renderer } from './renderer'
 
 const app = new Hono()
 
-app.use(renderer)
+// Simple health/data endpoint (menu data itself lives in /static/menu-data.js)
+app.get('/api/health', (c) => c.json({ ok: true, app: 'dayday-menu' }))
 
 app.get('/', (c) => {
-  return c.render(<h1>Hello!</h1>)
+  return c.html(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>DAYDAY – أكلة شعبية | المنيو</title>
+  <meta name="description" content="منيو مطعم داي داي — أكلة شعبية تونسية. لبلابي، كفتاجي، عجّة، مقرونة، دجاج مشوي و أكثر." />
+  <meta name="theme-color" content="#F2B705" />
+  <link rel="icon" type="image/jpeg" href="/static/chef-dayday.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Changa:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="/static/style.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="app" aria-live="polite">
+    <noscript>المنيو يحتاج JavaScript باش يخدم. من فضلك فعّلو في المتصفح.</noscript>
+  </div>
+  <script src="/static/menu-data.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>`)
 })
 
 export default app
