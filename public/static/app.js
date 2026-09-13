@@ -115,11 +115,8 @@
       <header class="site-header">
         <div class="header-row">
           <div class="brand">
-            <img src="/static/logo-dayday.webp" alt="ديْ ديْ" class="brand-logo" onload="this.classList.add('loaded')" onerror="this.remove()">
-            <div class="brand-text">
-              <div class="brand-name">ديْ ديْ</div>
-              <div class="brand-tag">أكلة شعبية 🇹🇳</div>
-            </div>
+            <img src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" class="brand-logo" onload="this.classList.add('loaded')" onerror="this.remove()">
+            <img src="/static/logo-wordmark.webp" alt="ديْ ديْ – أكلة شعبيّة" class="brand-wordmark" onload="this.classList.add('loaded')" onerror="this.remove()">
           </div>
           <div class="header-search">
             <span class="icon" aria-hidden="true">🔍</span>
@@ -154,7 +151,7 @@
       </main>
       <footer class="site-footer">
         <img src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" class="footer-logo" onload="this.classList.add('loaded')" onerror="this.remove()">
-        <div class="footer-name">ديْ ديْ</div>
+        <img src="/static/logo-wordmark.webp" alt="ديْ ديْ" class="footer-wordmark" onload="this.classList.add('loaded')" onerror="this.remove()">
         <div class="footer-tag">أكلة شعبية · Self-Service</div>
         <div class="footer-msg">يعطيكم الصحّة ❤️</div>
         <div class="footer-note">الأسعار بالدينار التونسي (DT) · تتغيّر حسب المطعم</div>

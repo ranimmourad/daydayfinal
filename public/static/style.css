@@ -45,18 +45,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: 8px 12px 6px;
   max-width: 900px; margin: 0 auto;
 }
-.brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.brand { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .brand-logo {
-  width: 42px; height: 42px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   object-fit: cover; border: 2.5px solid var(--red);
   background: #fff;
 }
-.brand-text { line-height: 1.05; }
-.brand-name {
-  font-family: var(--font-display);
-  font-weight: 800; font-size: 1.35rem; color: var(--red);
+.brand-wordmark {
+  height: 34px; width: auto;
+  border-radius: 8px;
+  object-fit: contain;
 }
-.brand-tag { font-size: 0.68rem; font-weight: 800; color: var(--ink); opacity: 0.8; }
 
 /* Header search input (always visible) */
 .header-search {
@@ -307,7 +306,11 @@ main { max-width: 900px; margin: 0 auto; padding: 10px 12px 30px; }
   border: 3px solid var(--yellow);
   background: #fff;
 }
-.footer-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--yellow); }
+.footer-wordmark {
+  height: 52px; width: auto; margin: 0 auto 4px;
+  border-radius: 10px;
+  border: 2px solid var(--yellow);
+}
 .footer-tag { font-weight: 800; font-size: 0.92rem; opacity: 0.95; }
 .footer-msg { margin-top: 8px; font-size: 1.05rem; font-weight: 900; }
 .footer-note { margin-top: 10px; font-size: 0.74rem; font-weight: 600; opacity: 0.75; }
@@ -325,7 +328,7 @@ main { max-width: 900px; margin: 0 auto; padding: 10px 12px 30px; }
 .back-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
 /* ── Image fade-in ──────────────────────────────── */
-.row-thumb img, .feat-card .f-img img, .tab .t-media img { opacity: 0; transition: opacity 0.25s; }
+.row-thumb img, .feat-card .f-img img, .tab .t-media img, .brand-logo, .brand-wordmark, .footer-logo, .footer-wordmark { opacity: 0; transition: opacity 0.25s; }
 img.loaded { opacity: 1 !important; }
 
 /* ── Section switch animation ───────────────────── */
