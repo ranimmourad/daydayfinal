@@ -9,6 +9,18 @@ const MENU_IMG = '/static/menu/';
 
 const CATEGORIES = [
   {
+    id: 'ojja', name: 'عجة', nameFr: 'Ojja', icon: '🍲',
+    items: [
+      { id: 'ojja-merguez',    name: 'عجة مرقاز',         nameFr: 'Ojja merguez',       price: 14, img: MENU_IMG + 'ojja-merguez.webp' },
+      { id: 'ojja-akoud',      name: 'عجة عقد',           nameFr: 'Ojja akoud',         price: 22, img: null },
+      { id: 'ojja-fruits-mer', name: 'عجة Fruits de mer', nameFr: 'Ojja fruits de mer', price: 28, img: MENU_IMG + 'ojja-fruits-mer.webp' },
+      { id: 'ojja-crevettes',  name: 'عجة Chevrettes',    nameFr: 'Ojja crevettes',     price: 25, img: MENU_IMG + 'ojja-crevettes.webp' },
+      { id: 'ojja-escalope',   name: 'عجة اسكالوب',       nameFr: 'Ojja escalope',      price: 14, img: MENU_IMG + 'ojja-escalope.webp' },
+      { id: 'ojja-mixte',      name: 'عجة Mixte',         nameFr: 'Ojja mixte',         price: 18, img: MENU_IMG + 'ojja-mixte.webp' },
+      { id: 'ojja-dayday',     name: 'عجة ديْ ديْ',         nameFr: 'Ojja DayDay',        price: 40, img: MENU_IMG + 'ojja-dayday.webp' },
+    ],
+  },
+  {
     id: 'lablabi', name: 'لبلابي', nameFr: 'Lablabi', icon: '🥣',
     items: [
       { id: 'lablabi-sec',  name: 'لبلابي sec',  nameFr: 'Lablabi sec',    price: 4.5, img: MENU_IMG + 'lablabi.webp' },
@@ -45,18 +57,6 @@ const CATEGORIES = [
       { id: 'makli-hout',     name: 'حوت مقلي',     nameFr: 'Poisson',  price: 20, img: null },
       { id: 'makli-mixte',    name: 'Mixte مقلي',   nameFr: 'Mixte',    price: 18, img: MENU_IMG + 'mixte-terre.webp' },
       { id: 'makli-dayday',   name: 'ديْ ديْ مقلي',   nameFr: 'DayDay',   price: 22, img: null },
-    ],
-  },
-  {
-    id: 'ojja', name: 'عجة', nameFr: 'Ojja', icon: '🍲',
-    items: [
-      { id: 'ojja-merguez',    name: 'عجة مرقاز',         nameFr: 'Ojja merguez',       price: 14, img: MENU_IMG + 'ojja-merguez.webp' },
-      { id: 'ojja-akoud',      name: 'عجة عقد',           nameFr: 'Ojja akoud',         price: 22, img: null },
-      { id: 'ojja-fruits-mer', name: 'عجة Fruits de mer', nameFr: 'Ojja fruits de mer', price: 28, img: MENU_IMG + 'ojja-fruits-mer.webp' },
-      { id: 'ojja-crevettes',  name: 'عجة Chevrettes',    nameFr: 'Ojja crevettes',     price: 25, img: MENU_IMG + 'ojja-crevettes.webp' },
-      { id: 'ojja-escalope',   name: 'عجة اسكالوب',       nameFr: 'Ojja escalope',      price: 14, img: MENU_IMG + 'ojja-escalope.webp' },
-      { id: 'ojja-mixte',      name: 'عجة Mixte',         nameFr: 'Ojja mixte',         price: 18, img: MENU_IMG + 'ojja-mixte.webp' },
-      { id: 'ojja-dayday',     name: 'عجة ديْ ديْ',         nameFr: 'Ojja DayDay',        price: 40, img: MENU_IMG + 'ojja-dayday.webp' },
     ],
   },
   {

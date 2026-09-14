@@ -260,7 +260,6 @@
       }
       syncTabs();
       renderPanel();
-      tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     });
 
     document.getElementById('toolbar').addEventListener('click', (e) => {

@@ -95,41 +95,49 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .ss-strip b { color: var(--yellow); }
 
-/* ── Category tabs (the heart of fast navigation) ── */
+/* ── Category tabs — 2-row grid, all visible, no scroll ── */
 .tabs {
   background: var(--yellow);
-  padding: 8px 0 10px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  padding: 8px 10px 10px;
 }
-.tabs::-webkit-scrollbar { display: none; }
 .tabs-inner {
-  display: flex; gap: 8px; padding: 0 12px;
-  width: max-content; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  max-width: 900px; margin: 0 auto;
 }
 .tab {
-  flex-shrink: 0;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
   background: var(--cream);
   border: 2.5px solid transparent;
-  border-radius: 14px;
-  padding: 7px 12px 6px;
-  min-width: 74px; min-height: 66px;
+  border-radius: 12px;
+  padding: 6px 2px 5px;
+  min-height: 62px;
+  min-width: 0;
   transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
 .tab:active { transform: scale(0.94); }
 .tab .t-media {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   overflow: hidden;
   background: var(--yellow-soft);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   border: 2px solid #fff;
   box-shadow: var(--shadow);
+  flex-shrink: 0;
 }
 .tab .t-media img { width: 100%; height: 100%; object-fit: cover; }
-.tab .t-name { font-size: 0.78rem; font-weight: 900; color: var(--ink); white-space: nowrap; }
+.tab .t-name {
+  font-size: 0.66rem; font-weight: 900; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+@media (min-width: 480px) {
+  .tab .t-name { font-size: 0.78rem; }
+  .tab .t-media { width: 40px; height: 40px; font-size: 1.3rem; }
+  .tabs-inner { gap: 8px; }
+}
 .tab.active { background: var(--red); border-color: var(--red-dark); }
 .tab.active .t-name { color: #fff; }
 .tab.active .t-media { border-color: var(--yellow); }
