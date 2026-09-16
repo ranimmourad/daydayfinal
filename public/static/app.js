@@ -55,7 +55,7 @@
 
   /* ── Render pieces ───────────────────────────── */
   
-  // New: Slider Card for the horizontal effect
+  // Slider Card for the horizontal effect
   const sliderCard = (it) => `
     <article class="slider-card" id="slide-${esc(it.id)}">
       <div class="slide-img">
@@ -270,7 +270,6 @@
       const tab = e.target.closest('.tab');
       if (!tab) return;
       state.cat = tab.dataset.cat;
-      // leaving search mode when a tab is tapped
       if (state.query) {
         state.query = '';
         const input = document.getElementById('search-input');
