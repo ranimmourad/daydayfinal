@@ -127,19 +127,6 @@
             <button type="button" class="search-clear" id="search-clear" aria-label="امسح">✕</button>
           </div>
         </div>
-        <nav class="tabs" id="tabs" aria-label="أصناف المنيو">
-          <div class="tabs-inner">
-            ${DATA.categories
-              .map(
-                (c) => `
-              <button type="button" class="tab${c.id === state.cat ? ' active' : ''}" data-cat="${esc(c.id)}" aria-pressed="${c.id === state.cat}">
-                <span class="t-media">${c.cover ? imgTag(c.cover, c.name) : `<span aria-hidden="true">${esc(c.icon)}</span>`}</span>
-                <span class="t-name">${esc(c.name)}</span>
-              </button>`
-              )
-              .join('')}
-          </div>
-        </nav>
       </header>
 
       <section class="hero" id="top">
@@ -160,6 +147,20 @@
           </section>
         </div>
       </section>
+
+      <nav class="tabs" id="tabs" aria-label="أصناف المنيو">
+        <div class="tabs-inner">
+          ${DATA.categories
+            .map(
+              (c) => `
+            <button type="button" class="tab${c.id === state.cat ? ' active' : ''}" data-cat="${esc(c.id)}" aria-pressed="${c.id === state.cat}">
+              <span class="t-media">${c.cover ? imgTag(c.cover, c.name) : `<span aria-hidden="true">${esc(c.icon)}</span>`}</span>
+              <span class="t-name">${esc(c.name)}</span>
+            </button>`
+            )
+            .join('')}
+        </div>
+      </nav>
 
       <main>
         <section id="panel-wrap"></section>
