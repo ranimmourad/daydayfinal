@@ -1,3 +1,17 @@
+Here is the fully updated `style.css` for Version 2. 
+
+I have cleaned it up by removing the old price filter toolbar styles, and I have added the **Hero Section styles** (adapted to match the vibrant DAYDAY yellow/red theme) as well as the **Slider styles** so it scrolls smoothly and looks native to your app.
+
+### Missing Images Checklist:
+Before or after you paste this, make sure these exact files are uploaded to your `/static/` folder (or wherever your public assets are hosted):
+1. **`chef-dayday.webp`** (Used in the header, hero, and footer)
+2. **`logo-wordmark.webp`** (Used in the header and footer)
+
+---
+
+### Updated `style.css`
+
+```css
 /* ══════════════════════════════════════════════════════
    DAYDAY – ديْ ديْ · أكلة شعبية
    Fast one-tap digital menu · tabs, no long scroll
@@ -84,17 +98,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .search-clear.visible { display: flex; }
 
-/* Self-service one-liner */
-.ss-strip {
-  background: var(--red);
-  color: #fff;
-  text-align: center;
-  font-size: 0.82rem; font-weight: 800;
-  padding: 5px 12px;
-  line-height: 1.4;
-}
-.ss-strip b { color: var(--yellow); }
-
 /* ── Category tabs — 2-row grid, all visible, no scroll ── */
 .tabs {
   background: var(--yellow);
@@ -142,32 +145,137 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .tab.active .t-name { color: #fff; }
 .tab.active .t-media { border-color: var(--yellow); }
 
-/* ── Toolbar: count + price filter chips ────────── */
+/* ── Hero Section (Self-Service Info) ─────────────── */
+.hero {
+  background: linear-gradient(180deg, var(--yellow) 0%, var(--yellow-bg) 100%);
+  padding: 24px 16px 20px;
+  text-align: center;
+}
+.hero-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.hero-chef {
+  width: 90px; height: 90px; border-radius: 50%;
+  object-fit: cover; border: 3px solid var(--red);
+  background: #fff; margin: 0 auto 8px;
+  box-shadow: var(--shadow-lift);
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem; font-weight: 900; color: var(--ink);
+  line-height: 1.1;
+}
+.hero-sub {
+  font-size: 0.9rem; font-weight: 700; color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.selfservice-card {
+  background: var(--card);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+.selfservice-title {
+  font-size: 1rem; font-weight: 900; color: var(--red);
+  margin-bottom: 4px;
+}
+.selfservice-text {
+  font-size: 0.85rem; font-weight: 600; color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.selfservice-steps {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+}
+.ss-step {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex: 1;
+}
+.ss-icon { font-size: 1.3rem; }
+.ss-label { font-size: 0.7rem; font-weight: 800; color: var(--ink); }
+.ss-arrow { font-size: 1rem; color: var(--gold); font-weight: 900; }
+
+/* ── Main Layout ──────────────────────────────────── */
 main { max-width: 900px; margin: 0 auto; padding: 10px 12px 30px; }
 
-.toolbar {
-  display: flex; align-items: center; gap: 8px;
-  margin: 2px 0 10px;
+/* ── Category Slider ──────────────────────────────── */
+.slider-wrap {
+  margin: 16px 0 20px;
+}
+.slider-title, .list-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  padding: 0 4px;
+  color: var(--ink);
+}
+.cat-slider {
+  display: flex;
+  gap: 12px;
   overflow-x: auto;
-  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  padding: 4px 4px 12px;
+  scrollbar-width: none; /* Firefox */
 }
-.toolbar::-webkit-scrollbar { display: none; }
-.toolbar .count {
-  font-size: 0.78rem; font-weight: 800; color: var(--ink-soft);
-  white-space: nowrap; flex-shrink: 0;
+.cat-slider::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
 }
-.price-chip {
-  flex-shrink: 0;
-  font-size: 0.78rem; font-weight: 800;
-  padding: 6px 13px; min-height: 34px;
-  border-radius: 999px;
-  background: #fff; color: var(--ink);
-  border: 1.5px solid #e8d9b5;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+.slider-card {
+  flex: 0 0 auto;
+  width: 140px;
+  scroll-snap-align: start;
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.15s ease;
+  border: 1px solid rgba(0,0,0,0.03);
 }
-.price-chip.active { background: var(--ink); color: var(--yellow); border-color: var(--ink); }
+.slider-card:active {
+  transform: scale(0.96);
+}
+.slide-img {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  background: var(--yellow-soft);
+}
+.slide-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.slide-img img.loaded { opacity: 1; }
+.slide-img .noimg {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%; font-size: 2.5rem;
+}
+.slide-info {
+  padding: 8px 10px 10px;
+  text-align: center;
+}
+.slide-name {
+  font-size: 0.9rem; font-weight: 800; margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.slide-price {
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 800; color: var(--red);
+  direction: ltr; display: inline-block;
+}
+.slide-price .dt { font-size: 0.7rem; }
+
+/* List Title separator */
+.list-title {
+  margin-top: 12px;
+  border-top: 1px solid #e8d9b5;
+  padding-top: 16px;
+}
 
 /* ── Featured hero card (top of category) ───────── */
 .feat-card {
@@ -361,3 +469,4 @@ button:focus-visible, input:focus-visible {
   outline: 3px solid var(--red);
   outline-offset: 2px;
 }
+```
