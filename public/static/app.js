@@ -11,7 +11,6 @@
   const state = {
     cat: DATA.categories[0].id,
     query: '',
-    price: 'all', // all | lt10 | 10-20 | gt20
   };
 
   /* ── Helpers ─────────────────────────────────── */
@@ -44,15 +43,6 @@
       .replace(/\s+/g, ' ')
       .trim();
 
-  const matchPrice = (p) => {
-    if (state.price === 'all') return true;
-    if (p == null) return false;
-    if (state.price === 'lt10') return p < 10;
-    if (state.price === '10-20') return p >= 10 && p <= 20;
-    if (state.price === 'gt20') return p > 20;
-    return true;
-  };
-
   const priceHTML = (p, cls) => {
     const f = fmtPrice(p);
     return f == null
@@ -64,6 +54,19 @@
     `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"${cls ? ` class="${cls}"` : ''} onload="this.classList.add('loaded')" onerror="this.remove()">`;
 
   /* ── Render pieces ───────────────────────────── */
+  
+  // New: Slider Card for the horizontal effect
+  const sliderCard = (it) => `
+    <article class="slider-card" id="slide-${esc(it.id)}">
+      <div class="slide-img">
+        ${it.img ? imgTag(it.img, it.name) : `<span class="noimg" aria-hidden="true">${esc(it.icon)}</span>`}
+      </div>
+      <div class="slide-info">
+        <div class="slide-name">${esc(it.name)}</div>
+        ${priceHTML(it.price, 'slide-price')}
+      </div>
+    </article>`;
+
   const rowCard = (it, showCat) => `
     <article class="row-card${it.featured ? ' is-feat' : ''}" id="item-${esc(it.id)}">
       ${it.featured ? '<span class="row-feat-star">⭐ À découvrir</span>' : ''}
@@ -124,7 +127,6 @@
             <button type="button" class="search-clear" id="search-clear" aria-label="امسح">✕</button>
           </div>
         </div>
-        <div class="ss-strip">إحنا <b>Self-Service</b> 👋 اختار اللّي يشهّيك و عَدّي الـ<b>commande</b> للـ<b>caisse</b></div>
         <nav class="tabs" id="tabs" aria-label="أصناف المنيو">
           <div class="tabs-inner">
             ${DATA.categories
@@ -139,14 +141,27 @@
           </div>
         </nav>
       </header>
-      <main>
-        <div class="toolbar" id="toolbar">
-          <span class="count" id="count"></span>
-          <button type="button" class="price-chip" data-price="all">الكل</button>
-          <button type="button" class="price-chip" data-price="lt10">أقل من 10 DT</button>
-          <button type="button" class="price-chip" data-price="10-20">10 – 20 DT</button>
-          <button type="button" class="price-chip" data-price="gt20">أكثر من 20 DT</button>
+
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <img class="hero-chef" src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" width="108" height="108" />
+          <h1 class="hero-title">ديْ ديْ</h1>
+          <p class="hero-sub">DAYDAY · أكلة شعبيّة</p>
+          <section class="selfservice-card" aria-label="طريقة الطلب">
+            <p class="selfservice-title">إحنا Self-Service 👋</p>
+            <p class="selfservice-text">اختار اللّي يشهّيك و عَدّي الـcommande للـcaisse</p>
+            <div class="selfservice-steps" aria-hidden="true">
+              <div class="ss-step"><span class="ss-icon">📖</span><span class="ss-label">المنيو</span></div>
+              <span class="ss-arrow">←</span>
+              <div class="ss-step"><span class="ss-icon">😋</span><span class="ss-label">اختار</span></div>
+              <span class="ss-arrow">←</span>
+              <div class="ss-step"><span class="ss-icon">💰</span><span class="ss-label">La caisse</span></div>
+            </div>
+          </section>
         </div>
+      </section>
+
+      <main>
         <section id="panel-wrap"></section>
       </main>
       <footer class="site-footer">
@@ -175,10 +190,9 @@
       const q = normalize(state.query);
       const results = DATA.items.filter(
         (it) =>
-          matchPrice(it.price) &&
-          (normalize(it.name).includes(q) ||
-            normalize(it.nameFr).includes(q) ||
-            normalize(it.categoryName).includes(q))
+          normalize(it.name).includes(q) ||
+          normalize(it.nameFr).includes(q) ||
+          normalize(it.categoryName).includes(q)
       );
       count = results.length;
       if (!results.length) {
@@ -192,16 +206,30 @@
       }
     } else {
       const cat = DATA.categories.find((c) => c.id === state.cat) || DATA.categories[0];
-      const items = cat.items.filter((it) => matchPrice(it.price));
+      const items = cat.items;
       count = items.length;
+      
       const feat = items.find((it) => it.featured && it.img);
       const rest = feat ? items.filter((it) => it !== feat) : items;
+      
+      // Get items with images for the slider
+      const slideItems = rest.filter(it => it.img).slice(0, 10); 
+      
       if (!items.length) {
         html = `<div class="panel">${noResults()}</div>`;
       } else {
         html = `
           <div class="panel">
             ${feat ? featCard(feat) : ''}
+            ${slideItems.length > 0 ? `
+              <div class="slider-wrap">
+                <div class="slider-title">🔥 الأكثر طلباً</div>
+                <div class="cat-slider">
+                  ${slideItems.map((it) => sliderCard(it)).join('')}
+                </div>
+              </div>
+            ` : ''}
+            <div class="list-title">الكل</div>
             <div class="rows">${rest.map((it) => rowCard(it, false)).join('')}</div>
             ${extrasStrip(cat.extras)}
           </div>`;
@@ -209,18 +237,14 @@
     }
 
     wrap.innerHTML = html;
-    const countEl = document.getElementById('count');
-    if (countEl) countEl.textContent = `${count} ماكلة`;
 
     const resetBtn = document.getElementById('reset-btn');
     if (resetBtn)
       resetBtn.addEventListener('click', () => {
         state.query = '';
-        state.price = 'all';
         const input = document.getElementById('search-input');
         if (input) input.value = '';
         syncSearchClear();
-        syncChips();
         renderPanel();
       });
   }
@@ -231,12 +255,6 @@
       const on = t.dataset.cat === state.cat;
       t.classList.toggle('active', on);
       t.setAttribute('aria-pressed', String(on));
-    });
-  }
-
-  function syncChips() {
-    document.querySelectorAll('.price-chip').forEach((c) => {
-      c.classList.toggle('active', c.dataset.price === state.price);
     });
   }
 
@@ -259,14 +277,6 @@
         syncSearchClear();
       }
       syncTabs();
-      renderPanel();
-    });
-
-    document.getElementById('toolbar').addEventListener('click', (e) => {
-      const chip = e.target.closest('.price-chip');
-      if (!chip) return;
-      state.price = chip.dataset.price;
-      syncChips();
       renderPanel();
     });
 
@@ -299,11 +309,10 @@
   }
 
   /* ── Init ────────────────────────────────────── */
-  syncChipsAfterShell();
-
-  function syncChipsAfterShell() {
+  function init() {
     renderShell();
-    syncChips();
     syncSearchClear();
   }
+  
+  init();
 })();
