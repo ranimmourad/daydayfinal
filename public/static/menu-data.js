@@ -21,6 +21,18 @@ const CATEGORIES = [
     ],
   },
   {
+    id: 'makrouna', name: 'مقرونة', nameFr: 'Makrouna', icon: '🍝',
+    items: [
+      { id: 'mak-crevettes',     name: 'مقرونة Chevrettes',    nameFr: 'Makrouna crevettes',     price: 25, img: MENU_IMG + 'makrouna-crevettes.webp' },
+      { id: 'mak-sauce-blanche', name: 'مقرونة Sauce blanche', nameFr: 'Makrouna sauce blanche', price: 17, img: MENU_IMG + 'makrouna-sauce-blanche.webp' },
+      { id: 'mak-putanesca',     name: 'مقرونة Putanesca',     nameFr: 'Makrouna putanesca',     price: 15, img: MENU_IMG + 'makrouna-putanesca.webp' },
+      { id: 'mak-fruits-mer',    name: 'مقرونة Fruits de mer', nameFr: 'Makrouna fruits de mer', price: 28, img: MENU_IMG + 'makrouna-fruits-mer.webp' },
+      { id: 'mak-escalope',      name: 'مقرونة اسكالوب',       nameFr: 'Makrouna escalope',      price: 13, img: null },
+      { id: 'mak-bolognaise',    name: 'مقرونة Bolognaise',    nameFr: 'Makrouna bolognaise',    price: 18, img: MENU_IMG + 'makrouna-bolognaise.webp' },
+      { id: 'mak-thon-fromage',  name: 'مقرونة Thon Fromage',  nameFr: 'Makrouna thon fromage',  price: 14, img: MENU_IMG + 'makrouna-thon-fromage.webp' },
+    ],
+  },
+  {
     id: 'lablabi', name: 'لبلابي', nameFr: 'Lablabi', icon: '🥣',
     items: [
       { id: 'lablabi-sec',  name: 'لبلابي sec',  nameFr: 'Lablabi sec',    price: 4.5, img: MENU_IMG + 'lablabi.webp' },
@@ -57,18 +69,6 @@ const CATEGORIES = [
       { id: 'makli-hout',     name: 'حوت مقلي',     nameFr: 'Poisson',  price: 20, img: null },
       { id: 'makli-mixte',    name: 'Mixte مقلي',   nameFr: 'Mixte',    price: 18, img: MENU_IMG + 'mixte-terre.webp' },
       { id: 'makli-dayday',   name: 'ديْ ديْ مقلي',   nameFr: 'DayDay',   price: 22, img: null },
-    ],
-  },
-  {
-    id: 'makrouna', name: 'مقرونة', nameFr: 'Makrouna', icon: '🍝',
-    items: [
-      { id: 'mak-crevettes',     name: 'مقرونة Chevrettes',    nameFr: 'Makrouna crevettes',     price: 25, img: MENU_IMG + 'makrouna-crevettes.webp' },
-      { id: 'mak-sauce-blanche', name: 'مقرونة Sauce blanche', nameFr: 'Makrouna sauce blanche', price: 17, img: MENU_IMG + 'makrouna-sauce-blanche.webp' },
-      { id: 'mak-putanesca',     name: 'مقرونة Putanesca',     nameFr: 'Makrouna putanesca',     price: 15, img: MENU_IMG + 'makrouna-putanesca.webp' },
-      { id: 'mak-fruits-mer',    name: 'مقرونة Fruits de mer', nameFr: 'Makrouna fruits de mer', price: 28, img: MENU_IMG + 'makrouna-fruits-mer.webp' },
-      { id: 'mak-escalope',      name: 'مقرونة اسكالوب',       nameFr: 'Makrouna escalope',      price: 13, img: null },
-      { id: 'mak-bolognaise',    name: 'مقرونة Bolognaise',    nameFr: 'Makrouna bolognaise',    price: 18, img: MENU_IMG + 'makrouna-bolognaise.webp' },
-      { id: 'mak-thon-fromage',  name: 'مقرونة Thon Fromage',  nameFr: 'Makrouna thon fromage',  price: 14, img: MENU_IMG + 'makrouna-thon-fromage.webp' },
     ],
   },
   {
