@@ -1,17 +1,3 @@
-Here is the fully updated `style.css` for Version 2. 
-
-I have cleaned it up by removing the old price filter toolbar styles, and I have added the **Hero Section styles** (adapted to match the vibrant DAYDAY yellow/red theme) as well as the **Slider styles** so it scrolls smoothly and looks native to your app.
-
-### Missing Images Checklist:
-Before or after you paste this, make sure these exact files are uploaded to your `/static/` folder (or wherever your public assets are hosted):
-1. **`chef-dayday.webp`** (Used in the header, hero, and footer)
-2. **`logo-wordmark.webp`** (Used in the header and footer)
-
----
-
-### Updated `style.css`
-
-```css
 /* ══════════════════════════════════════════════════════
    DAYDAY – ديْ ديْ · أكلة شعبية
    Fast one-tap digital menu · tabs, no long scroll
