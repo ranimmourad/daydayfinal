@@ -84,10 +84,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .search-clear.visible { display: flex; }
 
-/* ── Category tabs — 2-row grid, all visible, no scroll ── */
+/* ── Category tabs — 2-row grid, all visible, sticky ── */
 .tabs {
   background: var(--yellow);
   padding: 8px 10px 10px;
+  position: sticky;
+  top: 60px; /* Sticks right below the 60px header */
+  z-index: 40;
+  box-shadow: 0 4px 8px rgba(120, 72, 0, 0.1);
 }
 .tabs-inner {
   display: grid;
@@ -455,4 +459,3 @@ button:focus-visible, input:focus-visible {
   outline: 3px solid var(--red);
   outline-offset: 2px;
 }
-```
