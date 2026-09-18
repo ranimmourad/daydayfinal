@@ -39,7 +39,6 @@ const CATEGORIES = [
       { id: 'hargma-sec',   name: 'هرقمة sec',   nameFr: 'Hargma sec',     price: 9,   img: null },
       { id: 'soupe-hargma', name: 'Soupe هرقمة', nameFr: 'Soupe hargma',   price: 10,  img: null },
       { id: 'sahn-akoud',   name: 'صحن عقد',     nameFr: 'Assiette akoud', price: 20,  img: null },
-      { id: 'lablabi-thon', name: 'لبلابي + تن', nameFr: 'Lablabi + thon', price: 7.5, img: MENU_IMG + 'lablabi-complet.webp' },
     ],
     extras: [
       { name: 'عظمة', price: 1 },
@@ -57,18 +56,17 @@ const CATEGORIES = [
       { id: 'kafteji-merguez',  name: 'كفتاجي مرقاز',   nameFr: 'Kafteji merguez',     price: 10,   img: null },
       { id: 'kafteji-kebda',    name: 'كفتاجي كبدة',    nameFr: 'Kafteji kebda',       price: 10,   img: null },
       { id: 'sahfa-thoum',      name: 'صحفة ثوم',       nameFr: 'Assiette thoum',      price: 7,    img: null },
-      { id: 'slata-mechouia',   name: 'سلاطة مشوية',    nameFr: 'Slata mechouia',      price: null, img: MENU_IMG + 'slata-mechouia.webp' },
     ],
   },
   {
     id: 'sahn-makli', name: 'صحن مقلي', nameFr: 'Assiettes frites', icon: '🍳',
     items: [
-      { id: 'makli-escalope', name: 'اسكالوب مقلي', nameFr: 'Escalope', price: 14, img: MENU_IMG + 'kafteji-escalope.webp' },
-      { id: 'makli-merguez',  name: 'مرقاز مقلي',   nameFr: 'Merguez',  price: 14, img: MENU_IMG + 'kafteji-merguez.webp' },
-      { id: 'makli-kebda',    name: 'كبدة مقلية',   nameFr: 'Kebda',    price: 15, img: null },
-      { id: 'makli-hout',     name: 'حوت مقلي',     nameFr: 'Poisson',  price: 20, img: null },
-      { id: 'makli-mixte',    name: 'Mixte مقلي',   nameFr: 'Mixte',    price: 18, img: MENU_IMG + 'mixte-terre.webp' },
-      { id: 'makli-dayday',   name: 'ديْ ديْ مقلي',   nameFr: 'DayDay',   price: 22, img: null },
+      { id: 'makli-escalope', name: 'مقلي اسكالوب', nameFr: 'Escalope', price: 14, img: MENU_IMG + 'kafteji-escalope.webp' },
+      { id: 'makli-merguez',  name: 'مقلي مرقاز',   nameFr: 'Merguez',  price: 14, img: MENU_IMG + 'kafteji-merguez.webp' },
+      { id: 'makli-kebda',    name: 'مقلي كبدة',    nameFr: 'Kebda',    price: 15, img: null },
+      { id: 'makli-hout',     name: 'مقلي حوت',     nameFr: 'Poisson',  price: 20, img: null },
+      { id: 'makli-mixte',    name: 'مقلي Mixte',   nameFr: 'Mixte',    price: 18, img: MENU_IMG + 'mixte-terre.webp' },
+      { id: 'makli-dayday',   name: 'مقلي ديْ ديْ',   nameFr: 'DayDay',   price: 22, img: null },
     ],
   },
   {
@@ -82,6 +80,9 @@ const CATEGORIES = [
       { id: 'plat-escalope-panne',  name: 'اسكالوب Panné',   nameFr: 'Escalope panée',   price: 15, img: null },
       { id: 'plat-tajine',          name: 'طاجين',           nameFr: 'Tajine',           price: 10, img: MENU_IMG + 'plat-tajine.webp' },
       { id: 'plat-merguez',         name: 'مرقاز',           nameFr: 'Merguez',          price: 14, img: MENU_IMG + 'plat-merguez.webp' },
+    ],
+    extras: [
+      { name: 'Sauce', price: 5 }
     ],
   },
   {
