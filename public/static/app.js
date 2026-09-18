@@ -1,151 +1,322 @@
 /**
  * DAYDAY – ديْ ديْ · أكلة شعبية
- * SOURCE OF TRUTH = restaurant menu boards. Never invent a price.
- * price: null → UI shows "السوم في الـcaisse".
- * featured + category cover = auto-computed from highest price.
+ * Fast one-tap digital menu: tabs → one category panel at a time.
  */
+(function () {
+  'use strict';
 
-const MENU_IMG = '/static/menu/';
+  const DATA = window.DAYDAY_MENU;
+  if (!DATA) return;
 
-const CATEGORIES = [
-  {
-    id: 'ojja', name: 'عجة', nameFr: 'Ojja', icon: '🍲',
-    items: [
-      { id: 'ojja-merguez',    name: 'عجة مرقاز',         nameFr: 'Ojja merguez',       price: 14, img: MENU_IMG + 'ojja-merguez.webp' },
-      { id: 'ojja-akoud',      name: 'عجة عقد',           nameFr: 'Ojja akoud',         price: 22, img: null },
-      { id: 'ojja-fruits-mer', name: 'عجة Fruits de mer', nameFr: 'Ojja fruits de mer', price: 28, img: MENU_IMG + 'ojja-fruits-mer.webp' },
-      { id: 'ojja-crevettes',  name: 'عجة Chevrettes',    nameFr: 'Ojja crevettes',     price: 25, img: MENU_IMG + 'ojja-crevettes.webp' },
-      { id: 'ojja-escalope',   name: 'عجة اسكالوب',       nameFr: 'Ojja escalope',      price: 14, img: MENU_IMG + 'ojja-escalope.webp' },
-      { id: 'ojja-mixte',      name: 'عجة Mixte',         nameFr: 'Ojja mixte',         price: 18, img: MENU_IMG + 'ojja-mixte.webp' },
-      { id: 'ojja-dayday',     name: 'عجة ديْ ديْ',         nameFr: 'Ojja DayDay',        price: 40, img: MENU_IMG + 'ojja-dayday.webp' },
-    ],
-  },
-  {
-    id: 'makrouna', name: 'مقرونة', nameFr: 'Makrouna', icon: '🍝',
-    items: [
-      { id: 'mak-crevettes',     name: 'مقرونة Chevrettes',    nameFr: 'Makrouna crevettes',     price: 25, img: MENU_IMG + 'makrouna-crevettes.webp' },
-      { id: 'mak-sauce-blanche', name: 'مقرونة Sauce blanche', nameFr: 'Makrouna sauce blanche', price: 17, img: MENU_IMG + 'makrouna-sauce-blanche.webp' },
-      { id: 'mak-putanesca',     name: 'مقرونة Putanesca',     nameFr: 'Makrouna putanesca',     price: 15, img: MENU_IMG + 'makrouna-putanesca.webp' },
-      { id: 'mak-fruits-mer',    name: 'مقرونة Fruits de mer', nameFr: 'Makrouna fruits de mer', price: 28, img: MENU_IMG + 'makrouna-fruits-mer.webp' },
-      { id: 'mak-escalope',      name: 'مقرونة اسكالوب',       nameFr: 'Makrouna escalope',      price: 13, img: null },
-      { id: 'mak-bolognaise',    name: 'مقرونة Bolognaise',    nameFr: 'Makrouna bolognaise',    price: 18, img: MENU_IMG + 'makrouna-bolognaise.webp' },
-      { id: 'mak-thon-fromage',  name: 'مقرونة Thon Fromage',  nameFr: 'Makrouna thon fromage',  price: 14, img: MENU_IMG + 'makrouna-thon-fromage.webp' },
-    ],
-  },
-  {
-    id: 'lablabi', name: 'لبلابي', nameFr: 'Lablabi', icon: '🥣',
-    items: [
-      { id: 'lablabi-sec',  name: 'لبلابي sec',  nameFr: 'Lablabi sec',    price: 4.5, img: MENU_IMG + 'lablabi.webp' },
-      { id: 'hargma-sec',   name: 'هرقمة sec',   nameFr: 'Hargma sec',     price: 9,   img: null },
-      { id: 'soupe-hargma', name: 'Soupe هرقمة', nameFr: 'Soupe hargma',   price: 10,  img: null },
-      { id: 'sahn-akoud',   name: 'صحن عقد',     nameFr: 'Assiette akoud', price: 20,  img: null },
-    ],
-    extras: [
-      { name: 'عظمة', price: 1 },
-      { name: 'زيت زيتونة', price: 1.5 },
-      { name: 'تن', price: 3 },
-      { name: 'صحن ترشي', price: 1.5 },
-    ],
-  },
-  {
-    id: 'sahn', name: 'صحن', nameFr: 'Assiettes', icon: '🍛',
-    items: [
-      { id: 'sahn-tounsi',      name: 'صحن تونسي',      nameFr: 'Assiette tunisienne', price: 7,    img: MENU_IMG + 'salade-thon.webp' },
-      { id: 'kafteji',          name: 'كفتاجي',          nameFr: 'Kafteji',             price: 6,    img: MENU_IMG + 'kafteji.webp' },
-      { id: 'kafteji-escalope', name: 'كفتاجي اسكالوب', nameFr: 'Kafteji escalope',    price: 10,   img: null },
-      { id: 'kafteji-merguez',  name: 'كفتاجي مرقاز',   nameFr: 'Kafteji merguez',     price: 10,   img: null },
-      { id: 'kafteji-kebda',    name: 'كفتاجي كبدة',    nameFr: 'Kafteji kebda',       price: 10,   img: null },
-      { id: 'sahfa-thoum',      name: 'صحفة ثوم',       nameFr: 'Assiette thoum',      price: 7,    img: null },
-    ],
-  },
-  {
-    id: 'sahn-makli', name: 'صحن مقلي', nameFr: 'Assiettes frites', icon: '🍳',
-    items: [
-      { id: 'makli-escalope', name: 'مقلي اسكالوب', nameFr: 'Escalope', price: 14, img: MENU_IMG + 'kafteji-escalope.webp' },
-      { id: 'makli-merguez',  name: 'مقلي مرقاز',   nameFr: 'Merguez',  price: 14, img: MENU_IMG + 'kafteji-merguez.webp' },
-      { id: 'makli-kebda',    name: 'مقلي كبدة',    nameFr: 'Kebda',    price: 15, img: null },
-      { id: 'makli-hout',     name: 'مقلي حوت',     nameFr: 'Poisson',  price: 20, img: null },
-      { id: 'makli-mixte',    name: 'مقلي Mixte',   nameFr: 'Mixte',    price: 18, img: MENU_IMG + 'mixte-terre.webp' },
-      { id: 'makli-dayday',   name: 'مقلي ديْ ديْ',   nameFr: 'DayDay',   price: 22, img: null },
-    ],
-  },
-  {
-    id: 'plat-sauce', name: 'Plat + Sauce', nameFr: 'Plat + Sauce', icon: '🍽️',
-    items: [
-      { id: 'plat-mixte-terre',     name: 'Mixte Terre',     nameFr: 'Mixte terre',      price: 17, img: MENU_IMG + 'plat-mixte-terre.webp' },
-      { id: 'plat-mixte-mer',       name: 'Mixte Mer',       nameFr: 'Mixte mer',        price: 35, img: null },
-      { id: 'plat-dayday',          name: 'Plat DayDay',     nameFr: 'Plat DayDay',      price: 21, img: MENU_IMG + 'plat-dayday.webp' },
-      { id: 'plat-hout',            name: 'حوت',             nameFr: 'Poisson',          price: 20, img: null },
-      { id: 'plat-escalope-grille', name: 'اسكالوب Grillé',  nameFr: 'Escalope grillée', price: 13, img: MENU_IMG + 'plat-escalope-grille.webp' },
-      { id: 'plat-escalope-panne',  name: 'اسكالوب Panné',   nameFr: 'Escalope panée',   price: 15, img: null },
-      { id: 'plat-tajine',          name: 'طاجين',           nameFr: 'Tajine',           price: 10, img: MENU_IMG + 'plat-tajine.webp' },
-      { id: 'plat-merguez',         name: 'مرقاز',           nameFr: 'Merguez',          price: 14, img: MENU_IMG + 'plat-merguez.webp' },
-    ],
-    extras: [
-      { name: 'Sauce', price: 5 }
-    ],
-  },
-  {
-    id: 'djaj', name: 'دجاج', nameFr: 'Poulet', icon: '🍗',
-    items: [
-      { id: 'quart-djaj',       name: 'ربع دجاج',         nameFr: '¼ Poulet',              price: 12, img: MENU_IMG + 'quart-poulet.webp' },
-      { id: 'nos-djaj-sec',     name: 'نصف دجاج sec',     nameFr: '½ Poulet sec',          price: 12, img: MENU_IMG + 'demi-poulet-sec.webp' },
-      { id: 'nos-djaj-complet', name: 'نصف دجاج complet', nameFr: '½ Poulet complet',      price: 17, img: MENU_IMG + 'demi-poulet-complet.webp' },
-      { id: 'djaja-sec',        name: 'دجاجة sec',        nameFr: 'Poulet entier sec',     price: 19, img: MENU_IMG + 'poulet-sec.webp' },
-      { id: 'djaja-complet',    name: 'دجاجة complet',    nameFr: 'Poulet entier complet', price: 25, img: MENU_IMG + 'poulet-complet.webp' },
-    ],
-  },
-  {
-    id: 'kaskrout', name: 'كسكروت', nameFr: 'Casse-croûte', icon: '🥖',
-    items: [
-      { id: 'kk-kafteji',  name: 'كسكروت كفتاجي',  nameFr: 'Kafteji',  price: 4,   img: MENU_IMG + 'casse-croute-kafteji.webp' },
-      { id: 'kk-djaj',     name: 'كسكروت دجاج',    nameFr: 'Poulet',   price: 6,   img: MENU_IMG + 'casse-croute-poulet.webp' },
-      { id: 'kk-thon',     name: 'كسكروت تن',      nameFr: 'Thon',     price: 6.5, img: MENU_IMG + 'casse-croute-thon.webp' },
-      { id: 'kk-merguez',  name: 'كسكروت مرقاز',   nameFr: 'Merguez',  price: 7.5, img: MENU_IMG + 'casse-croute-merguez.webp' },
-      { id: 'kk-escalope', name: 'كسكروت اسكالوب', nameFr: 'Escalope', price: 7.5, img: MENU_IMG + 'casse-croute-escalope.webp' },
-      { id: 'kk-kebda',    name: 'كسكروت كبدة',    nameFr: 'Kebda',    price: 8.5, img: null },
-    ],
-  },
-  {
-    id: 'idhafat', name: 'إضافات', nameFr: 'Suppléments', icon: '➕',
-    items: [
-      { id: 'sup-frite',     name: 'فريت',      nameFr: 'Frites',       price: 3,   img: null },
-      { id: 'sup-escalope',  name: 'اسكالوب',   nameFr: 'Escalope',     price: 5,   img: null },
-      { id: 'sup-merguez',   name: 'مرقاز',     nameFr: 'Merguez',      price: 5,   img: null },
-      { id: 'sup-kebda',     name: 'كبدة',      nameFr: 'Kebda',        price: 5,   img: null },
-      { id: 'sup-thon',      name: 'تن',        nameFr: 'Thon',         price: 3,   img: null },
-      { id: 'sup-chorba',    name: 'صحفة شربة', nameFr: 'Bol de soupe', price: 3,   img: null },
-      { id: 'sup-torchi',    name: 'صحن ترشي',  nameFr: 'Torchi',       price: 1.5, img: MENU_IMG + 'salade-tunisienne.webp' },
-      { id: 'sup-emballage', name: 'Emballage', nameFr: 'Emballage',    price: 0.5, img: null },
-    ],
-  },
-  {
-    id: 'machroubet', name: 'مشروبات', nameFr: 'Boissons', icon: '🥤',
-    items: [
-      { id: 'canette',    name: 'Canette',   nameFr: 'Canette',        price: 2.5, img: null },
-      { id: 'eau-1l',     name: 'ماء 1L',    nameFr: 'Eau 1L',         price: 1.5, img: null },
-      { id: 'blel-sghir', name: 'بلار صغير', nameFr: 'Boisson petite', price: 1.5, img: null },
-      { id: 'blel-kbir',  name: 'بلار كبير', nameFr: 'Boisson grande', price: 3.5, img: null },
-    ],
-  },
-];
+  const state = {
+    cat: DATA.categories[0].id,
+    query: '',
+  };
 
-/* Auto: featured = priciest item / category · cover = priciest item WITH photo */
-CATEGORIES.forEach((cat) => {
-  let maxItem = null;
-  cat.items.forEach((it) => {
-    it.category = cat.id;
-    it.categoryName = cat.name;
-    it.icon = cat.icon;
-    it.available = it.available !== false;
-    it.featured = false;
-    if (it.price != null && (maxItem == null || it.price > maxItem.price)) maxItem = it;
-  });
-  if (maxItem) maxItem.featured = true;
-  const withImg = cat.items.filter((i) => i.img && i.price != null).sort((a, b) => b.price - a.price);
-  cat.cover = withImg.length ? withImg[0].img : (cat.items.find((i) => i.img)?.img || null);
-  cat.minPrice = Math.min(...cat.items.filter((i) => i.price != null).map((i) => i.price));
-});
+  /* ── Helpers ─────────────────────────────────── */
+  const esc = (s) =>
+    String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
 
-const ALL_ITEMS = CATEGORIES.flatMap((c) => c.items);
-window.DAYDAY_MENU = { categories: CATEGORIES, items: ALL_ITEMS };
+  const fmtPrice = (p) => {
+    if (p == null) return null;
+    const n = Number(p);
+    return Number.isInteger(n) ? String(n) : String(n).replace(/\.0$/, '');
+  };
+
+  const normalize = (s) =>
+    String(s || '')
+      .toLowerCase()
+      .replace(/[\u064B-\u065F\u0670]/g, '')
+      .replace(/[أإآٱ]/g, 'ا')
+      .replace(/ة/g, 'ه')
+      .replace(/ى/g, 'ي')
+      .replace(/ؤ/g, 'و')
+      .replace(/ئ/g, 'ي')
+      .replace(/[éèêë]/g, 'e')
+      .replace(/[àâä]/g, 'a')
+      .replace(/[ùûü]/g, 'u')
+      .replace(/[îï]/g, 'i')
+      .replace(/ô/g, 'o')
+      .replace(/ç/g, 'c')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const priceHTML = (p, cls) => {
+    const f = fmtPrice(p);
+    return f == null
+      ? `<span class="${cls} noprice">السوم في الـcaisse</span>`
+      : `<span class="${cls}">${f}<span class="dt"> DT</span></span>`;
+  };
+
+  const imgTag = (src, alt, cls) =>
+    `<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" decoding="async"${cls ? ` class="${cls}"` : ''} onload="this.classList.add('loaded')" onerror="this.remove()">`;
+
+  /* ── Render pieces ───────────────────────────── */
+  
+  // Slider Card for the horizontal effect
+  const sliderCard = (it) => `
+    <article class="slider-card" id="slide-${esc(it.id)}">
+      <div class="slide-img">
+        ${it.img ? imgTag(it.img, it.name) : `<span class="noimg" aria-hidden="true">${esc(it.icon)}</span>`}
+      </div>
+      <div class="slide-info">
+        <div class="slide-name">${esc(it.name)}</div>
+        ${priceHTML(it.price, 'slide-price')}
+      </div>
+    </article>`;
+
+  const rowCard = (it, showCat) => `
+    <article class="row-card${it.featured ? ' is-feat' : ''}" id="item-${esc(it.id)}">
+      ${it.featured ? '<span class="row-feat-star">⭐ À découvrir</span>' : ''}
+      <div class="row-thumb">
+        ${it.img ? imgTag(it.img, it.name) : `<span class="noimg" aria-hidden="true">${esc(it.icon)}</span>`}
+      </div>
+      <div class="row-info">
+        <div class="row-name">${esc(it.name)}<span class="fr">${esc(it.nameFr || '')}</span></div>
+        ${showCat ? `<div class="row-cat">${esc(it.icon)} ${esc(it.categoryName)}</div>` : ''}
+      </div>
+      ${priceHTML(it.price, 'row-price')}
+    </article>`;
+
+  const featCard = (it) => `
+    <article class="feat-card" id="feat-${esc(it.id)}">
+      <div class="f-img">
+        <span class="feat-badge">⭐ À découvrir</span>
+        ${it.img ? imgTag(it.img, it.name) : `<span class="f-noimg" aria-hidden="true">${esc(it.icon)}</span>`}
+      </div>
+      <div class="f-row">
+        <div class="f-name">${esc(it.name)}<span class="fr">${esc(it.nameFr || '')}</span></div>
+        ${priceHTML(it.price, 'f-price')}
+      </div>
+    </article>`;
+
+  const extrasStrip = (cat) => {
+    if (!cat.extras || !cat.extras.length) return '';
+    return `
+      <div class="extras-strip">
+        <div class="extras-title">➕ زيد على ${esc(cat.name)}</div>
+        <ul>${cat.extras
+          .map((e) => `<li>${esc(e.name)} <b>${fmtPrice(e.price)} DT</b></li>`)
+          .join('')}</ul>
+      </div>`;
+  };
+
+  const noResults = () => `
+    <div class="no-results">
+      <div class="emoji">🍽️</div>
+      <p>ما لقينا شيء بهذا الاسم</p>
+      <small>جرّب كلمة أخرى ولا تصفّح الأصناف</small>
+      <button type="button" id="reset-btn">شوف المنيو الكامل</button>
+    </div>`;
+
+  /* ── Main render ─────────────────────────────── */
+  function renderShell() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+      <header class="site-header">
+        <div class="header-row">
+          <div class="brand">
+            <img src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" class="brand-logo" onload="this.classList.add('loaded')" onerror="this.remove()">
+            <img src="/static/logo-wordmark.webp" alt="ديْ ديْ – أكلة شعبيّة" class="brand-wordmark" onload="this.classList.add('loaded')" onerror="this.remove()">
+          </div>
+          <div class="header-search">
+            <span class="icon" aria-hidden="true">🔍</span>
+            <input type="search" id="search-input" placeholder="شنوّة تشهّيك؟" autocomplete="off" enterkeyhint="search" aria-label="لوّج في المنيو">
+            <button type="button" class="search-clear" id="search-clear" aria-label="امسح">✕</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-inner">
+          <img class="hero-chef" src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" width="108" height="108" />
+          <h1 class="hero-title">ديْ ديْ</h1>
+          <p class="hero-sub">DAYDAY · أكلة شعبيّة</p>
+          <section class="selfservice-card" aria-label="طريقة الطلب">
+            <p class="selfservice-title">إحنا Self-Service 👋</p>
+            <p class="selfservice-text">اختار اللّي يشهّيك و عَدّي الـcommande للـcaisse</p>
+            <div class="selfservice-steps" aria-hidden="true">
+              <div class="ss-step"><span class="ss-icon">📖</span><span class="ss-label">المنيو</span></div>
+              <span class="ss-arrow">←</span>
+              <div class="ss-step"><span class="ss-icon">😋</span><span class="ss-label">اختار</span></div>
+              <span class="ss-arrow">←</span>
+              <div class="ss-step"><span class="ss-icon">💰</span><span class="ss-label">La caisse</span></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <nav class="tabs" id="tabs" aria-label="أصناف المنيو">
+        <div class="tabs-inner">
+          ${DATA.categories
+            .map(
+              (c) => `
+            <button type="button" class="tab${c.id === state.cat ? ' active' : ''}" data-cat="${esc(c.id)}" aria-pressed="${c.id === state.cat}">
+              <span class="t-media">${c.cover ? imgTag(c.cover, c.name) : `<span aria-hidden="true">${esc(c.icon)}</span>`}</span>
+              <span class="t-name">${esc(c.name)}</span>
+            </button>`
+            )
+            .join('')}
+        </div>
+      </nav>
+
+      <main>
+        <section id="panel-wrap"></section>
+      </main>
+      <footer class="site-footer">
+        <img src="/static/chef-dayday.webp" alt="شيف ديْ ديْ" class="footer-logo" onload="this.classList.add('loaded')" onerror="this.remove()">
+        <img src="/static/logo-wordmark.webp" alt="ديْ ديْ" class="footer-wordmark" onload="this.classList.add('loaded')" onerror="this.remove()">
+        <div class="footer-tag">أكلة شعبية · Self-Service</div>
+        <div class="footer-msg">يعطيكم الصحّة ❤️</div>
+        <div class="footer-note">الأسعار بالدينار التونسي (DT) · تتغيّر حسب المطعم</div>
+      </footer>
+      <button type="button" class="back-top" id="back-top" aria-label="ارجع للفوق">↑</button>
+    `;
+    bindEvents();
+    renderPanel();
+  }
+
+  function renderPanel() {
+    const wrap = document.getElementById('panel-wrap');
+    const container = document.getElementById('app');
+    const searching = state.query.length > 0;
+    container.classList.toggle('searching', searching);
+
+    let html = '';
+    let count = 0;
+
+    if (searching) {
+      const q = normalize(state.query);
+      const results = DATA.items.filter(
+        (it) =>
+          normalize(it.name).includes(q) ||
+          normalize(it.nameFr).includes(q) ||
+          normalize(it.categoryName).includes(q)
+      );
+      count = results.length;
+      if (!results.length) {
+        html = `<div class="panel">${noResults()}</div>`;
+      } else {
+        html = `
+          <div class="panel">
+            <div class="results-title">نتيجة اللّوجان: <b>${count}</b> ${count === 1 ? 'ماكلة' : 'ماكلة'} 😋</div>
+            <div class="rows">${results.map((it) => rowCard(it, true)).join('')}</div>
+          </div>`;
+      }
+    } else {
+      const cat = DATA.categories.find((c) => c.id === state.cat) || DATA.categories[0];
+      const items = cat.items;
+      count = items.length;
+      
+      const feat = items.find((it) => it.featured && it.img);
+      // Keep all items in the list so the featured item is also listed
+      const rest = items; 
+      
+      // Get items with images for the slider, SORT BY PRICE DESCENDING (most expensive first)
+      const slideItems = rest
+        .filter(it => it.img)
+        .sort((a, b) => (b.price || 0) - (a.price || 0))
+        .slice(0, 10); 
+      
+      if (!items.length) {
+        html = `<div class="panel">${noResults()}</div>`;
+      } else {
+        html = `
+          <div class="panel">
+            ${feat ? featCard(feat) : ''}
+            ${slideItems.length > 0 ? `
+              <div class="slider-wrap">
+                <div class="slider-title">🔥 الأكثر طلباً</div>
+                <div class="cat-slider">
+                  ${slideItems.map((it) => sliderCard(it)).join('')}
+                </div>
+              </div>
+            ` : ''}
+            <div class="list-title">الكل</div>
+            <div class="rows">${rest.map((it) => rowCard(it, false)).join('')}</div>
+            ${extrasStrip(cat)}
+          </div>`;
+      }
+    }
+
+    wrap.innerHTML = html;
+
+    const resetBtn = document.getElementById('reset-btn');
+    if (resetBtn)
+      resetBtn.addEventListener('click', () => {
+        state.query = '';
+        const input = document.getElementById('search-input');
+        if (input) input.value = '';
+        syncSearchClear();
+        renderPanel();
+      });
+  }
+
+  /* ── UI sync ─────────────────────────────────── */
+  function syncTabs() {
+    document.querySelectorAll('.tab').forEach((t) => {
+      const on = t.dataset.cat === state.cat;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  function syncSearchClear() {
+    const btn = document.getElementById('search-clear');
+    if (btn) btn.classList.toggle('visible', state.query.length > 0);
+  }
+
+  /* ── Events ──────────────────────────────────── */
+  function bindEvents() {
+    document.getElementById('tabs').addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      state.cat = tab.dataset.cat;
+      if (state.query) {
+        state.query = '';
+        const input = document.getElementById('search-input');
+        if (input) input.value = '';
+        syncSearchClear();
+      }
+      syncTabs();
+      renderPanel();
+    });
+
+    const input = document.getElementById('search-input');
+    let deb;
+    input.addEventListener('input', () => {
+      clearTimeout(deb);
+      deb = setTimeout(() => {
+        state.query = input.value.trim();
+        syncSearchClear();
+        renderPanel();
+      }, 120);
+    });
+
+    document.getElementById('search-clear').addEventListener('click', () => {
+      input.value = '';
+      state.query = '';
+      syncSearchClear();
+      renderPanel();
+      input.focus();
+    });
+
+    const backTop = document.getElementById('back-top');
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener(
+      'scroll',
+      () => backTop.classList.toggle('visible', window.scrollY > 500),
+      { passive: true }
+    );
+  }
+
+  /* ── Init ────────────────────────────────────── */
+  function init() {
+    renderShell();
+    syncSearchClear();
+  }
+  
+  init();
+})();
